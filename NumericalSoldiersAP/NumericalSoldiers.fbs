@@ -17,10 +17,15 @@ table GameConstants{
     max_capacity_player:int = 3000;
     min_capacity_palyer:int = 500;
 
-    max_capacity_enemy:int = 3500; 
+    max_capacity_enemy:int = 2000; 
     min_capacity_enemy:int = 800;
 
-    building_types: [BuildingType];
+
+  
+
+    num_building : byte = 4;
+
+    building_types: [BuildingType];                 
 }
 
 
@@ -28,9 +33,9 @@ table GameConstants{
 
 table BuildingType{
     id : short;
-    base_health:int = 100;
-    max_capacity :int = 1000;
-    min_capacity :int = 100;
+    base_health:int = 100;   
+    max_capacity_building :int = 1000;
+    min_capacity_building :int = 100;
     type_of_capability:TypeOfCapability;
 }
 

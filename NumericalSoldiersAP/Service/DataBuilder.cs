@@ -21,7 +21,7 @@ namespace NumericalSoldiersAP.Service
                 building_defense_multiplier: 2,
                 max_capacity_player: 3000,
                 min_capacity_palyer: 500, 
-                max_capacity_enemy: 3500,
+                max_capacity_enemy: 2000,
                 min_capacity_enemy: 800,
                 building_typesOffset:BuildRandomData.CreateRandomBuildingTypeVector(builder));
 

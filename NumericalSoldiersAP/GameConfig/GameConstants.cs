@@ -26,10 +26,11 @@ public struct GameConstants : IFlatbufferObject
   public sbyte BuildingDefenseMultiplier { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetSbyte(o + __p.bb_pos) : (sbyte)2; } }
   public int MaxCapacityPlayer { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)3000; } }
   public int MinCapacityPalyer { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)500; } }
-  public int MaxCapacityEnemy { get { int o = __p.__offset(16); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)3500; } }
+  public int MaxCapacityEnemy { get { int o = __p.__offset(16); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)2000; } }
   public int MinCapacityEnemy { get { int o = __p.__offset(18); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)800; } }
-  public GameConfig.BuildingType? BuildingTypes(int j) { int o = __p.__offset(20); return o != 0 ? (GameConfig.BuildingType?)(new GameConfig.BuildingType()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
-  public int BuildingTypesLength { get { int o = __p.__offset(20); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public sbyte NumBuilding { get { int o = __p.__offset(20); return o != 0 ? __p.bb.GetSbyte(o + __p.bb_pos) : (sbyte)4; } }
+  public GameConfig.BuildingType? BuildingTypes(int j) { int o = __p.__offset(22); return o != 0 ? (GameConfig.BuildingType?)(new GameConfig.BuildingType()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
+  public int BuildingTypesLength { get { int o = __p.__offset(22); return o != 0 ? __p.__vector_len(o) : 0; } }
 
   public static Offset<GameConfig.GameConstants> CreateGameConstants(FlatBufferBuilder builder,
       float soldier_health_factor = 0.1f,
@@ -38,10 +39,11 @@ public struct GameConstants : IFlatbufferObject
       sbyte building_defense_multiplier = 2,
       int max_capacity_player = 3000,
       int min_capacity_palyer = 500,
-      int max_capacity_enemy = 3500,
+      int max_capacity_enemy = 2000,
       int min_capacity_enemy = 800,
+      sbyte num_building = 4,
       VectorOffset building_typesOffset = default(VectorOffset)) {
-    builder.StartTable(9);
+    builder.StartTable(10);
     GameConstants.AddBuildingTypes(builder, building_typesOffset);
     GameConstants.AddMinCapacityEnemy(builder, min_capacity_enemy);
     GameConstants.AddMaxCapacityEnemy(builder, max_capacity_enemy);
@@ -49,21 +51,23 @@ public struct GameConstants : IFlatbufferObject
     GameConstants.AddMaxCapacityPlayer(builder, max_capacity_player);
     GameConstants.AddShooterTroopFactor(builder, shooter_troop_factor);
     GameConstants.AddSoldierHealthFactor(builder, soldier_health_factor);
+    GameConstants.AddNumBuilding(builder, num_building);
     GameConstants.AddBuildingDefenseMultiplier(builder, building_defense_multiplier);
     GameConstants.AddNumPaths(builder, num_paths);
     return GameConstants.EndGameConstants(builder);
   }
 
-  public static void StartGameConstants(FlatBufferBuilder builder) { builder.StartTable(9); }
+  public static void StartGameConstants(FlatBufferBuilder builder) { builder.StartTable(10); }
   public static void AddSoldierHealthFactor(FlatBufferBuilder builder, float soldierHealthFactor) { builder.AddFloat(0, soldierHealthFactor, 0.1f); }
   public static void AddShooterTroopFactor(FlatBufferBuilder builder, float shooterTroopFactor) { builder.AddFloat(1, shooterTroopFactor, 0.2f); }
   public static void AddNumPaths(FlatBufferBuilder builder, sbyte numPaths) { builder.AddSbyte(2, numPaths, 2); }
   public static void AddBuildingDefenseMultiplier(FlatBufferBuilder builder, sbyte buildingDefenseMultiplier) { builder.AddSbyte(3, buildingDefenseMultiplier, 2); }
   public static void AddMaxCapacityPlayer(FlatBufferBuilder builder, int maxCapacityPlayer) { builder.AddInt(4, maxCapacityPlayer, 3000); }
   public static void AddMinCapacityPalyer(FlatBufferBuilder builder, int minCapacityPalyer) { builder.AddInt(5, minCapacityPalyer, 500); }
-  public static void AddMaxCapacityEnemy(FlatBufferBuilder builder, int maxCapacityEnemy) { builder.AddInt(6, maxCapacityEnemy, 3500); }
+  public static void AddMaxCapacityEnemy(FlatBufferBuilder builder, int maxCapacityEnemy) { builder.AddInt(6, maxCapacityEnemy, 2000); }
   public static void AddMinCapacityEnemy(FlatBufferBuilder builder, int minCapacityEnemy) { builder.AddInt(7, minCapacityEnemy, 800); }
-  public static void AddBuildingTypes(FlatBufferBuilder builder, VectorOffset buildingTypesOffset) { builder.AddOffset(8, buildingTypesOffset.Value, 0); }
+  public static void AddNumBuilding(FlatBufferBuilder builder, sbyte numBuilding) { builder.AddSbyte(8, numBuilding, 4); }
+  public static void AddBuildingTypes(FlatBufferBuilder builder, VectorOffset buildingTypesOffset) { builder.AddOffset(9, buildingTypesOffset.Value, 0); }
   public static VectorOffset CreateBuildingTypesVector(FlatBufferBuilder builder, Offset<GameConfig.BuildingType>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
   public static VectorOffset CreateBuildingTypesVectorBlock(FlatBufferBuilder builder, Offset<GameConfig.BuildingType>[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
   public static VectorOffset CreateBuildingTypesVectorBlock(FlatBufferBuilder builder, ArraySegment<Offset<GameConfig.BuildingType>> data) { builder.StartVector(4, data.Count, 4); builder.Add(data); return builder.EndVector(); }
@@ -91,7 +95,8 @@ static public class GameConstantsVerify
       && verifier.VerifyField(tablePos, 14 /*MinCapacityPalyer*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 16 /*MaxCapacityEnemy*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 18 /*MinCapacityEnemy*/, 4 /*int*/, 4, false)
-      && verifier.VerifyVectorOfTables(tablePos, 20 /*BuildingTypes*/, GameConfig.BuildingTypeVerify.Verify, false)
+      && verifier.VerifyField(tablePos, 20 /*NumBuilding*/, 1 /*sbyte*/, 1, false)
+      && verifier.VerifyVectorOfTables(tablePos, 22 /*BuildingTypes*/, GameConfig.BuildingTypeVerify.Verify, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

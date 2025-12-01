@@ -21,19 +21,19 @@ public struct BuildingType : IFlatbufferObject
 
   public short Id { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetShort(o + __p.bb_pos) : (short)0; } }
   public int BaseHealth { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)100; } }
-  public int MaxCapacity { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)1000; } }
-  public int MinCapacity { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)100; } }
+  public int MaxCapacityBuilding { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)1000; } }
+  public int MinCapacityBuilding { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)100; } }
   public GameConfig.TypeOfCapability TypeOfCapability { get { int o = __p.__offset(12); return o != 0 ? (GameConfig.TypeOfCapability)__p.bb.GetSbyte(o + __p.bb_pos) : GameConfig.TypeOfCapability.TypeSoldier; } }
 
   public static Offset<GameConfig.BuildingType> CreateBuildingType(FlatBufferBuilder builder,
       short id = 0,
       int base_health = 100,
-      int max_capacity = 1000,
-      int min_capacity = 100,
+      int max_capacity_building = 1000,
+      int min_capacity_building = 100,
       GameConfig.TypeOfCapability type_of_capability = GameConfig.TypeOfCapability.TypeSoldier) {
     builder.StartTable(5);
-    BuildingType.AddMinCapacity(builder, min_capacity);
-    BuildingType.AddMaxCapacity(builder, max_capacity);
+    BuildingType.AddMinCapacityBuilding(builder, min_capacity_building);
+    BuildingType.AddMaxCapacityBuilding(builder, max_capacity_building);
     BuildingType.AddBaseHealth(builder, base_health);
     BuildingType.AddId(builder, id);
     BuildingType.AddTypeOfCapability(builder, type_of_capability);
@@ -43,8 +43,8 @@ public struct BuildingType : IFlatbufferObject
   public static void StartBuildingType(FlatBufferBuilder builder) { builder.StartTable(5); }
   public static void AddId(FlatBufferBuilder builder, short id) { builder.AddShort(0, id, 0); }
   public static void AddBaseHealth(FlatBufferBuilder builder, int baseHealth) { builder.AddInt(1, baseHealth, 100); }
-  public static void AddMaxCapacity(FlatBufferBuilder builder, int maxCapacity) { builder.AddInt(2, maxCapacity, 1000); }
-  public static void AddMinCapacity(FlatBufferBuilder builder, int minCapacity) { builder.AddInt(3, minCapacity, 100); }
+  public static void AddMaxCapacityBuilding(FlatBufferBuilder builder, int maxCapacityBuilding) { builder.AddInt(2, maxCapacityBuilding, 1000); }
+  public static void AddMinCapacityBuilding(FlatBufferBuilder builder, int minCapacityBuilding) { builder.AddInt(3, minCapacityBuilding, 100); }
   public static void AddTypeOfCapability(FlatBufferBuilder builder, GameConfig.TypeOfCapability typeOfCapability) { builder.AddSbyte(4, (sbyte)typeOfCapability, 0); }
   public static Offset<GameConfig.BuildingType> EndBuildingType(FlatBufferBuilder builder) {
     int o = builder.EndTable();
@@ -60,8 +60,8 @@ static public class BuildingTypeVerify
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyField(tablePos, 4 /*Id*/, 2 /*short*/, 2, false)
       && verifier.VerifyField(tablePos, 6 /*BaseHealth*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 8 /*MaxCapacity*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 10 /*MinCapacity*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 8 /*MaxCapacityBuilding*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 10 /*MinCapacityBuilding*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 12 /*TypeOfCapability*/, 1 /*GameConfig.TypeOfCapability*/, 1, false)
       && verifier.VerifyTableEnd(tablePos);
   }
