@@ -1,6 +1,11 @@
 namespace GameConfig;
 
-root_type GameConstants;
+
+enum TypeOfCapability : byte{
+    TypeSoldier = 0,
+    TypeShooter = 1
+}
+
 
 table GameConstants{
 
@@ -8,7 +13,19 @@ table GameConstants{
     shooter_troop_factor: float = 0.2;    
     num_paths: byte = 2;
     building_defense_multiplier: byte = 2;
+
+    max_capacity_player:int = 3000;
+    min_capacity_palyer:int = 500;
+
+    max_capacity_enemy:int = 3500; 
+    min_capacity_enemy:int = 800;
+
+    building_types: [BuildingType];
 }
+
+
+
+
 table BuildingType{
     id : short;
     base_health:int = 100;
@@ -17,18 +34,6 @@ table BuildingType{
     type_of_capability:TypeOfCapability;
 }
 
-enum TypeOfCapability : byte{
-    TypeSoldier,
-    TypeShooter
-}
 
-struct PlayerState{
-    max_capacity_player:int = 3000;
-    min_capacity_palyer:int = 500;
-}
 
-struct EnemyState{
-    max_capacity_Enemy:int = 3500; 
-    min_capacity_palyer:int = 800;
-}
-
+root_type GameConstants;
