@@ -20,7 +20,7 @@ namespace NumericalSoldiersAP.Service
         {
             Table table = new Table();
             table.Expand = true;
-            table.AddColumn("Welcome to Numerical Solders AP");
+            table.AddColumn("Welcome to Numerical Solders AP (Aripa Pars Studio)");
 
             EntireGameScreen = new Panel(table);
             EntireGameScreen.Header = new PanelHeader("Numerical Solders");
