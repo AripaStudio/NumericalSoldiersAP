@@ -20,10 +20,10 @@ namespace NumericalSoldiersAP.Service
         {
             Table table = new Table();
             table.Expand = true;
-            table.AddColumn("Welcome to Numerical Solders AP (Aripa Pars Studio)");
+            table.AddColumn("Welcome to Numerical Soldier AP (Aripa Pars Studio)");
 
             EntireGameScreen = new Panel(table);
-            EntireGameScreen.Header = new PanelHeader("Numerical Solders");
+            EntireGameScreen.Header = new PanelHeader("Numerical Soldier");
             EntireGameScreen.Border = BoxBorder.Double;
             EntireGameScreen.Padding = new Padding(2, 2, 2, 2);
             EntireGameScreen.Expand = true;
