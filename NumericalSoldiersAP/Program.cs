@@ -4,6 +4,9 @@ using System.Runtime.CompilerServices;
 using NumericalSoldiersAP.Service;
 
 
+Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
+
+
 DataBuilder.BuildGameData();
 
 GameManager gameManager = new GameManager();

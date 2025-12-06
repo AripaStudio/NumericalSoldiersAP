@@ -14,6 +14,7 @@ namespace NumericalSoldiersAP.Service
     public class GameManager
     {
         private UImanager UiManager = new UImanager();
+        private UIManagerWar uiManagerWar = new UIManagerWar();
         private BuildingManager buildingManager = new BuildingManager();
         public void StartGame()
         {
@@ -90,16 +91,7 @@ namespace NumericalSoldiersAP.Service
                         };
                         var GameState = WarManager.StartWar(warState);
 
-                        if (GameState == GameStateEnum.Win)
-                        {
-                            PlayerManager.PlayerWin++;
-                            UiManager.ShowWinAnimation();
-                        }
-                        else
-                        {
-                            PlayerManager.PlayerLose++;
-                            UiManager.ShowLoseAnimation();
-                        }
+                       uiManagerWar.StartWar(GameState);
 
                     }
                     else

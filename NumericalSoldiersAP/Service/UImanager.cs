@@ -2,9 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using String = System.String;
 
 namespace NumericalSoldiersAP.Service
 {
@@ -20,7 +23,7 @@ namespace NumericalSoldiersAP.Service
         {
             Table table = new Table();
             table.Expand = true;
-            table.AddColumn("Welcome to Numerical Soldier AP (Aripa Pars Studio)");
+            table.AddColumn("Welcome to Numerical Soldier AP (Aripa Pars Studio) Version 1.1.0");
 
             EntireGameScreen = new Panel(table);
             EntireGameScreen.Header = new PanelHeader("Numerical Soldier");
@@ -33,33 +36,7 @@ namespace NumericalSoldiersAP.Service
             playerInfoTable.Expand = true;
             table.AddRow(playerInfoTable);
 
-
-
-            //building : 
-            var content1 = new Markup("[yellow] Building 1 [/]");
-            var content2 = new Markup("[yellow] Building 2 [/]");
-            var content3 = new Markup("[yellow] Building 3 [/]");
-            var content4 = new Markup("[yellow] Building 4 [/]");
-            var building1Panel = new Panel(content1);
-            var building2Panel = new Panel(content2);
-            var building3Panel = new Panel(content3);
-            var building4Panel = new Panel(content4);
-            var centerLayoutRowOne = new Columns(building1Panel, building2Panel);
-            var centerLayoutRowTwo = new Columns(building3Panel, building4Panel);
-            centerLayoutRowOne.Padding = new Padding(2, 2, 2, 2);
-            centerLayoutRowTwo.Padding = new Padding(2, 2, 2, 2);
-
-            var verticalLayout = new Table();
-            verticalLayout.Expand = true;
-            verticalLayout.Border = TableBorder.None;
-
-            verticalLayout.AddColumn(new TableColumn("Game Content").NoWrap());
-            verticalLayout.AddRow(centerLayoutRowOne);
-            verticalLayout.AddRow(centerLayoutRowTwo);
-            
-
-
-            Panel CenterGamePanel = new Panel(verticalLayout);
+            Panel CenterGamePanel = new Panel(CreateBuildingUI(4));
             CenterGamePanel.Expand = true;
             CenterGamePanel.Header = new PanelHeader("[bold]GameMap and Building[/]");
             table.AddRow(CenterGamePanel);
@@ -72,6 +49,77 @@ namespace NumericalSoldiersAP.Service
             AnsiConsole.Clear();
             AnsiConsole.Write(EntireGameScreen);
 
+        }
+
+        public Table CreateBuildingUI(short ValueBuilding)
+        {
+            List<Markup> contentMarkups = new List<Markup>();
+            List<Panel> buildingPanels = new List<Panel>();
+            for (int i = 0; i < ValueBuilding; i++)
+            {
+                var content = new Markup($"[yellow] Building {i + 1} [/]");
+                contentMarkups.Add(content);
+                var building = new Panel(contentMarkups[i]);
+                buildingPanels.Add(building);
+            }
+
+            Table buildingLayoutRowOneTable = new Table();
+            buildingLayoutRowOneTable.AddColumn("Building Section up");
+            Table buildingLayoutRowTwoTable = new Table();
+            buildingLayoutRowTwoTable.AddColumn("Building Section down");
+            Table WayEnemyBase = new Table();
+            for (int i = 0; i < 10; i++)
+            {
+                WayEnemyBase.AddColumn(" " +(i + 1));
+            }
+            WayEnemyBase.AddColumn("Enemy Base");
+
+            List<Markup> rowCells =new List<Markup>();
+            for (int i = 0; i < 10; i++)
+            {
+                rowCells.Add(new Markup($" {i + 1}"));
+            }
+            rowCells.Add(new Markup("[red] Enemy Base [/]"));
+
+            WayEnemyBase.AddRow(rowCells);
+
+
+
+
+
+
+
+
+            Columns centerLayoutRowOne = new Columns(buildingLayoutRowOneTable);
+            Columns centerLayoutRowTwo = new Columns(buildingLayoutRowTwoTable);
+            Columns centerLayoutRowEnemy = new Columns(WayEnemyBase);
+            
+            centerLayoutRowOne.Padding = new Padding(2, 2, 2, 2);
+            centerLayoutRowTwo.Padding = new Padding(2, 2, 2, 2);
+
+            for (int i = 0; i < ValueBuilding ; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    buildingLayoutRowOneTable.AddRow(buildingPanels[i ]);
+                }
+                else
+                {
+                    buildingLayoutRowTwoTable.AddRow(buildingPanels[i]);
+                }
+            }
+          
+
+            var verticalLayout = new Table();
+            verticalLayout.Expand = true;
+            verticalLayout.Border = TableBorder.None;
+
+            verticalLayout.AddColumn(new TableColumn("Game Content").NoWrap());
+            verticalLayout.AddRow(centerLayoutRowOne);
+            verticalLayout.AddRow(centerLayoutRowEnemy);
+            verticalLayout.AddRow(centerLayoutRowTwo);
+
+            return verticalLayout;
         }
 
         public void NewMessage(string message)
@@ -88,18 +136,18 @@ namespace NumericalSoldiersAP.Service
                 .Title("Select (type [green]Number[/]) the desired [blue]building.[/]")
                 .MoreChoicesText("[grey](Move up and down to reveal more NameBuilding)[/]")
                 .AddChoices(new short[] {
-                   1,2 , 
+                   1,2 ,
                    3 ,4
                 }));
-            int output = Prompt -1;
+            int output = Prompt - 1;
 
-            
+
             return Convert.ToInt16(output);
 
         }
 
 
-        public int AskForTroops(short buildingId , int RemainingNumber)
+        public int AskForTroops(short buildingId, int RemainingNumber)
         {
             var minCapacity = CurrentBuildings.buildings[buildingId].MinCapacityBuilding;
             var maxCapacity = CurrentBuildings.buildings[buildingId].MaxCapacityBuilding;
@@ -134,40 +182,62 @@ namespace NumericalSoldiersAP.Service
 
 
 
-    public void ShowWinAnimation()
+
+
+    }
+
+
+    public class UIManagerWar
+    {
+        public UImanager UImanager = new UImanager();
+        public void StartWar(GameStateEnum gameState) {
+        
+            AnsiConsole.Clear();
+            var UIwar = UImanager.CreateBuildingUI(4);
+            AnsiConsole.Write(UIwar);
+
+            ShowResultWar(gameState);
+
+            Thread.Sleep(2000);
+
+            AnsiConsole.Clear();
+            UImanager.CreateUI();
+        }
+
+
+
+        public void ShowResultWar(GameStateEnum warResult)
         {
+            FigletText StateGameText = new FigletText("");
             AnsiConsole.Clear();
 
-            var winText = new FigletText("WINNER (:")
-                .Centered()
-                .Color(Color.GreenYellow);
 
-            AnsiConsole.Write(winText);
+            switch (warResult)
+            {
+                case GameStateEnum.Win:
+                    {
+                        StateGameText = new FigletText("WINNER (:")
+                            .Centered()
+                            .Color(Color.GreenYellow);
+                        break;
+                    }
+                case GameStateEnum.Lose:
+                    {
+                        StateGameText = new FigletText("WINNER (:")
+                            .Centered()
+                            .Color(Color.GreenYellow);
+                        break;
+                    }
+            }
+
+            AnsiConsole.Write(StateGameText);
 
             Thread.Sleep(3000);
 
             AnsiConsole.Clear();
-            
-            CreateUI();
-            
+
+            UImanager.CreateUI();
+
         }
-
-        public void ShowLoseAnimation()
-        {
-            AnsiConsole.Clear();
-
-            var winText = new FigletText("LOSE ):")
-                .Centered()
-                .Color(Color.DarkSeaGreen2_1);
-
-            AnsiConsole.Write(winText);
-
-            Thread.Sleep(3000);
-
-            AnsiConsole.Clear();
-
-            CreateUI();
-        }
-
     }
 }
